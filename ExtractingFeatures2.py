@@ -45,44 +45,33 @@ class ExtractingFeatures:
     def extract_feature(self, X):
         """Exract the embeddings of a single transformed image X"""
 
-        # X shape: (3, 224, 224)
-        # X dtype: float32
+        print("X shape:", X.shape)
+        print("X dtype:", X.dtype)
 
-        # If X is already a single image NumPy array of shape (3, 224, 224), you should wrap it in a list first before stacking. Otherwise np.stack treats the (3, 224, 224) array as three “items” along axis 0, giving a shape (3, 3, 224, 224), which explains your reshape error.
+        feature = self.model.infer(X).reshape(-1)
 
-        # Ensure X is a list of images
-        if isinstance(X, np.ndarray):
-            X = [X]  # wrap single image in a list
-
-
-        #Tā inffer funkcija tomēr sagaida ar batch dimension (kas ir labi - nākotnē implementēt)
-        # Tāpēc uztaisam numpy stack lai viņš var noteikt .shape un uzzināt ka batch ir 1
-        X = np.stack(X, axis=0)  # now X.shape = (batch, 3, 224, 224)
-
-        # Savukārt reshape nevajag (noņēmu) - flatteno feature vektoru
-        # Piemēram, (2, 2048) -> (4096,)
-
-        feature = self.model.infer(X)[0]  # Get the first (and only) batch
-
-        # feature shape: (256,)
-        # feature dtype: float32
+        print("feature shape:", feature.shape)
+        print("feature dtype:", feature.dtype)
 
         X_flipped = self.fliplr_np(X)
 
-        # X_flipped shape: (1, 3, 224, 224)
-        # X_flipped dtype: float32
+        print("X_flipped shape:", X_flipped.shape)
+        print("X_flipped dtype:", X_flipped.dtype)
 
-        flipped_feature = self.model.infer(X_flipped)[0]  # Get the first (and only) batch
+        flipped_feature = self.model.infer(X_flipped).reshape(-1)
 
-        #flipped_feature shape: (256,)
-        #flipped_feature dtype: float32
+        print("flipped_feature shape:", flipped_feature.shape)
+        print("flipped_feature dtype:", flipped_feature.dtype)
 
         feature += flipped_feature
 
+        print("feature after flipping shape:", feature.shape)
+        print("feature after flipping dtype:", feature.dtype)
+
         fnorm = self.l2_normalize(feature)
 
-        # fnorm shape: (256,)
-        # fnorm dtype: float32
+        print("fnorm shape:", fnorm.shape)
+        print("fnorm dtype:", fnorm.dtype)
 
         return fnorm
     
@@ -93,9 +82,8 @@ class ExtractingFeatures:
 
         # img preprocess shape: (3, 224, 224)
         # img preprocess dtype: float32
-        
 
-        feats = self.extract_feature(img)
+        feats = self.extract_feature([img])
 
         print("feats[0] shape:", feats[0].shape)
         print("feats[0] dtype:", feats[0].dtype)

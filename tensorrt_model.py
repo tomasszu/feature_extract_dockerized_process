@@ -1,8 +1,13 @@
+import ctypes
 import tensorrt as trt
+ctypes.CDLL("/usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so", mode=ctypes.RTLD_GLOBAL)
+trt.init_libnvinfer_plugins(None, "")
+
 import pycuda.driver as cuda
 import pycuda.autoinit
 import numpy as np
 import os
+
 
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
 

@@ -36,7 +36,7 @@ class ReceiveDetectionsService:
         try:
             payload = json.loads(msg.payload.decode('utf-8'))
 
-            image_np = self._decode_crop_pil(payload["image"])
+            image_np = self._decode_crop_np(payload["image"])
             self.queue.append({
                 "track_id": payload["track_id"],
                 "bbox": payload["bbox"],

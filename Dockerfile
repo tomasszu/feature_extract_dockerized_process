@@ -24,4 +24,9 @@ RUN pip3 install --no-cache-dir -r /app/requirements.txt
 WORKDIR /app
 COPY . /app
 
+# Test libraries
+# CMD find / -name "libnvinfer_plugin.so*" 2>/dev/null && \
+#     find / -name "libnvinfer.so*" 2>/dev/null && \
+#     python3 main.py
+
 CMD ["python3", "main.py"]
