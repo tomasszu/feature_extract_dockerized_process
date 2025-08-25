@@ -38,11 +38,11 @@ class SendFeatures:
         
     def __call__(self, track_id, features):
 
-        features = features.flatten().tolist()
+        features = features.flatten().tolist() # Convert to list for JSON serialization
         
         data = {
             'track_id': int(track_id),
-            'features': features  # Convert ndarray to list
+            'features': features
         }
 
         self.send_over_mqtt(data)

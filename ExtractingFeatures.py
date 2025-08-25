@@ -97,8 +97,5 @@ class ExtractingFeatures:
 
         feats = self.extract_feature(img)
 
-        print("feats[0] shape:", feats[0].shape)
-        print("feats[0] dtype:", feats[0].dtype)
-
-        return np.array(feats[0])
+        return feats
     
